@@ -459,8 +459,16 @@ FROM biblioteca.socios
 	ON biblioteca.socios.COD_SOCIO = biblioteca.prestamos.fk_Cod_SOCIO
 WHERE biblioteca.socios.Sexo = 'Femenino';
 
-/*Aquellos libros que sean de la editorial "Leer y aprender"*/
-SELECT biblioteca.libros.Título
-FROM (SELECT Nombre_Editorial as Editorial
-	FROM biblioteca.editorial
-	WHERE Nombre_Editorial = "Leer y aprender");
+/*Libros con volumenes en muy buen estado*/
+SELECT Título
+FROM biblioteca.libros
+WHERE biblioteca.libros.ISBN in (SELECT biblioteca.volumen.fk_ISBN
+	FROM biblioteca.volumen
+    WHERE biblioteca.volumen.Estado = "Muy bueno");
+    
+/*Aquellos socios que tengan como fecha tope de su prestamo el día 4 del mes 1 del año 2019*/
+SELECT biblioteca.socios.Nombre
+FROM biblioteca.socios
+WHERE biblioteca.socios.COD_SOCIO in (SELECT biblioteca.prestamos.fk_Cod_SOCIO
+	FROM biblioteca.prestamos 
+	WHERE biblioteca.prestamos.FECHA_TOPE ="2019-01-04");
