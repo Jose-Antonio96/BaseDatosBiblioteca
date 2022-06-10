@@ -434,3 +434,33 @@ INSERT INTO biblioteca.prestamos(
     '2019-07-01',
     '2019-09-02'
 );
+
+/*Volumenes con un estado "Bueno"*/
+SELECT Estado
+FROM biblioteca.volumen
+WHERE Estado = "Bueno";
+
+/*Aquellos títulos de libros con espacios en el nombre*/
+SELECT Título
+FROM biblioteca.libros
+WHERE Título LIKE "% %";
+
+/*Aquellos libros y títulos que coincidan con la ISBN 9780590353403*/
+SELECT biblioteca.libros.Título
+FROM biblioteca.libros
+	 LEFT JOIN biblioteca.volumen 
+     ON biblioteca.libros.Título = biblioteca.volumen.Título
+WHERE biblioteca.volumen.fk_ISBN = "9780590353403";
+
+/*Cada socio femenino que haya hecho un prestamo*/
+SELECT biblioteca.socios.Nombre
+FROM biblioteca.socios
+	INNER JOIN biblioteca.prestamos
+	ON biblioteca.socios.COD_SOCIO = biblioteca.prestamos.fk_Cod_SOCIO
+WHERE biblioteca.socios.Sexo = 'Femenino';
+
+/*Aquellos libros que sean de la editorial "Leer y aprender"*/
+SELECT biblioteca.libros.Título
+FROM (SELECT Nombre_Editorial as Editorial
+	FROM biblioteca.editorial
+	WHERE Nombre_Editorial = "Leer y aprender");
